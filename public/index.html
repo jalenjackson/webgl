@@ -1,0 +1,598 @@
+<!doctype html>
+<html>
+   <head>
+       <title>Three js</title>
+       <link href="https://fonts.googleapis.com/css?family=Questrial" rel="stylesheet">       <style>
+
+           body {
+               margin: 0;
+               padding: 0;
+               overflow: hidden;
+           }
+           #myCanvas {
+               background:linear-gradient(0deg ,black, black);
+
+           }
+
+           #myCanvas:after {
+               content: "";
+               display: block;
+               position:absolute;
+               top:0;
+               left:0;
+               width: 100%;
+               height: 50%;
+               background:black;
+           }
+
+           .text-overlay {
+               position: fixed;
+               top:0;
+               left:0;
+               width:100%;
+               height: 100%;
+               background:rgba(0,0,0,0.2);
+               z-index: 2;
+               pointer-events: none;
+           }
+
+           .text-overlay h1 {
+               color:rgb(255,255,255);
+               margin-left: 120px;
+               font-size: 50px;
+               font-weight: 100;
+               font-family: 'Questrial', sans-serif;
+
+               position: absolute;
+               top:41%;
+               left: 20px;
+               height: 50px;
+
+
+           }
+
+           .black-hole:after {
+               content: '';
+               display: block;
+               position: absolute;
+               bottom: -5px;
+               left: 0;
+               width: 0%;
+               height: 2px;
+               border-radius: 2em;
+               background:linear-gradient(to left, rgba(255,255,255,0.3), rgba(255,255,255,0.2));
+               animation: insist 2s 1s ease-in-out forwards infinite;
+           }
+
+           .read-more {
+               font-size:12px;
+               opacity: 0.6;
+               font-weight: 100;
+           }
+
+           @keyframes insist {
+               0%{
+                   width: 0%;
+                   left: 0%;
+               }
+
+               50% {
+                   width: 100%;
+                   left: 0;
+               }
+
+               100% {
+                   width: 0%;
+                   right: 0;
+                   left: 100%;
+               }
+
+
+
+           }
+
+           .moveDown {
+               animation: moveDown 300ms ease-in-out forwards;
+
+           }
+
+
+
+           @keyframes moveDown {
+               0%{
+                 transform:  translate3D(0px,0px,0px);
+               }
+               100%{
+                   transform:  translate3D(0px,220px,0px);
+                   opacity: 0;
+
+               }
+           }
+
+
+       .bars {
+           position: absolute;
+           top:45%;
+           left: 20px;
+           width:50px;
+           height: 50px;
+           filter: invert(100%);
+           cursor: pointer;
+       }
+
+
+       .menu {
+           position: absolute;
+           top:0;
+           left: 0;
+           width: 100%;
+           height: 100%;
+           background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.6));
+           z-index: 6;
+       }
+
+       .menu-animation {
+           animation: go-up 500ms ease-in-out forwards;
+
+       }
+
+       .three-column-animation {
+           animation: goup 600ms ease-in-out forwards;
+
+       }
+
+       .three-column {
+           display: inline-block;
+           background:rgba(31,31,31, 0.3);
+            margin-left: 5px;
+           margin-top:5px;
+           width: 15.5%;
+           height: 23%;
+           overflow: hidden;
+           transform: translateY(100%);
+
+       }
+
+       @keyframes go-up {
+           0%{
+               transform: translate3D(0px,30px,0px);
+           }
+           100%{
+               transform: translate3D(0px,0px,0px);
+           }
+       }
+       @keyframes goup {
+           0%{
+               opacity: 0;
+           }
+           100%{
+               opacity: 1;
+
+           }
+       }
+
+
+
+
+       .menu-items {
+           width: 50%;
+           height: 100%;
+           margin-left:20px;
+       }
+
+           .wrapper {
+               margin: 100px auto 0;
+               width: 36px;
+               cursor: pointer;
+               position: relative;
+               -moz-transition: all 133ms cubic-bezier(0.5, 0, 0, 1);
+               -o-transition: all 133ms cubic-bezier(0.5, 0, 0, 1);
+               -webkit-transition: all 133ms cubic-bezier(0.5, 0, 0, 1);
+               transition: all 133ms cubic-bezier(0.5, 0, 0, 1);
+           }
+
+           ul {
+               list-style: none;
+               margin: 0;
+               padding: 0;
+           }
+
+           .hamburger {
+               margin: 0;
+               padding: 6px 6px 7px 6px;
+               position: absolute;
+               top:40%;
+               left:20px;
+               -moz-transition: all 133ms cubic-bezier(0.5, 0, 0, 1);
+               -o-transition: all 133ms cubic-bezier(0.5, 0, 0, 1);
+               -webkit-transition: all 133ms cubic-bezier(0.5, 0, 0, 1);
+               transition: all 133ms cubic-bezier(0.5, 0, 0, 1);
+           }
+           .hamburger li {
+               width: 24px;
+               height: 4px;
+               background: #fff;
+               margin: 2px 0 0;
+               padding: 0;
+               -moz-transform: translate3d(0, 0, 0);
+               -ms-transform: translate3d(0, 0, 0);
+               -webkit-transform: translate3d(0, 0, 0);
+               transform: translate3d(0, 0, 0);
+               -moz-transition: all 133ms cubic-bezier(0.5, 0, 0, 1);
+               -o-transition: all 133ms cubic-bezier(0.5, 0, 0, 1);
+               -webkit-transition: all 133ms cubic-bezier(0.5, 0, 0, 1);
+               transition: all 533ms cubic-bezier(0.5, 0, 0, 1);
+           }
+
+           .hamburger:hover li {
+               margin: 8px 0 0;
+           }
+           .hidden {
+               position: absolute;
+               opacity: 0;
+               -moz-transition: all 333ms cubic-bezier(0.5, 0, 0, 1);
+               -o-transition: all 333ms cubic-bezier(0.5, 0, 0, 1);
+               -webkit-transition: all 333ms cubic-bezier(0.5, 0, 0, 1);
+               transition: all 333ms cubic-bezier(0.5, 0, 0, 1);
+           }
+
+           .box {
+               width: 36px;
+               height: 30px;
+               background: #464646;
+               -moz-transition: all 533ms cubic-bezier(0.5, 0, 0, 1);
+               -o-transition: all 533ms cubic-bezier(0.5, 0, 0, 1);
+               -webkit-transition: all 533ms cubic-bezier(0.5, 0, 0, 1);
+               transition: all 533ms cubic-bezier(0.5, 0, 0, 1);
+           }
+
+           .checked {
+               background: #464646;
+           }
+           .checked .hidden {
+               opacity: 1;
+               -moz-transform: translateY(5px);
+               -ms-transform: translateY(5px);
+               -webkit-transform: translateY(5px);
+               transform: translateY(5px);
+           }
+           .checked .box:last-child {
+               -moz-transform: translateY(5px);
+               -ms-transform: translateY(5px);
+               -webkit-transform: translateY(5px);
+               transform: translateY(5px);
+           }
+
+       .menu-items img {
+           filter: invert(100%);
+           width:60px;
+           height: 30px;
+           display: block;
+           margin: 0 auto;
+           position: absolute;
+           top:100px;
+           left:20%;
+           opacity: 0;
+           transition: all 400ms ease-in-out;
+       }
+
+
+
+   </style>
+   </head>
+    <body>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/86/three.min.js"></script>
+
+        <div style="position: absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);"></div>
+
+
+                <div class='visible bars'>
+                    <ul class='hamburger bars'>
+                        <li class='first'></li>
+                        <li class='second'></li>
+                        <li class='third'></li>
+                    </ul>
+                </div>
+                <div class='hidden'>
+                    <ul>
+                        <li class='box'></li>
+                        <li class='box'></li>
+                    </ul>
+                </div>
+
+        <audio id="audio" loop autoplay>
+            <source src="audio.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+
+        <div class="text-overlay">
+            <h1><span class="black-hole">Black Hole</span> <p class="read-more">Read More</p> </h1>
+        </div>
+
+        <div class="menu">
+            <div class="menu-items">
+                <img class="ex" src="https://assets.nexusradio.fm/menu/nexusmenu-x.png"/>
+                <div style="animation-delay: 0ms; background: url(doomsday1.png) center center no-repeat; background-size: cover;" class="three-column">
+                </div>
+                <div style="animation-delay: 50ms;" class="three-column"></div>
+                <div style="animation-delay: 100ms;" class="three-column"></div>
+
+
+            <div style="animation-delay: 150ms;" class="three-column"></div>
+            <div style="animation-delay: 200ms;" class="three-column"></div>
+            <div style="animation-delay: 250ms;" class="three-column"></div>
+
+                <div style="animation-delay: 300ms;" class="three-column"></div>
+                <div style="animation-delay: 350ms;" class="three-column"></div>
+                <div style="animation-delay: 400ms;" class="three-column"></div>
+                <div style="animation-delay: 450ms;" class="three-column"></div>
+
+            </div>
+        </div>
+        <canvas id="myCanvas"></canvas>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script>
+
+            $(".menu").hide();
+            $(document).ready(function(){
+                $('#nav-icon1,#nav-icon2,#nav-icon3,#nav-icon4').click(function(){
+                    $(this).toggleClass('open');
+                });
+            });
+
+
+
+            var audio = document.getElementById("audio");
+            audio.volume = 0.2;
+
+            var renderer = new THREE.WebGLRenderer({canvas: document.getElementById("myCanvas"), antialias: true, alpha: true});
+            renderer.setClearColor(0x000000, 0);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            var camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 3000);
+            var scene = new THREE.Scene();
+
+            camera.position.set(0,0,10);
+
+
+            var Colors = {
+                red:0xf25346,
+                white:0xd8d0d1,
+                brown:0x59332e,
+                pink:0xF5986E,
+                brownDark:0x23190f,
+                blue:0x68c3c0,
+            };
+
+
+            var texture = new THREE.TextureLoader().load( "red2.jpg" );
+            var texture4 = new THREE.TextureLoader().load( "download.jpeg" );
+
+
+
+
+
+            var geometry = new THREE.SphereGeometry(3.4, 100, 100);
+            var material = new THREE.MeshBasicMaterial({map: texture});
+            var cube = new THREE.Mesh(geometry, material);
+            scene.add(cube);
+
+
+
+
+
+
+            function getRandomAbritary(min,max){
+                return Math.random() * (max-min) + min;
+            }
+
+
+
+            Sea = function(){
+                var geom = new THREE.CylinderGeometry(600,600,800,40,10);
+                geom.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI/2));
+
+                // important: by merging vertices we ensure the continuity of the waves
+                geom.mergeVertices();
+
+                // get the vertices
+                var l = geom.vertices.length;
+
+                // create an array to store new data associated to each vertex
+                this.waves = [];
+
+                for (var i=0; i<l; i++){
+                    // get each vertex
+                    var v = geom.vertices[i];
+
+                    // store some data associated to it
+                    this.waves.push({y:v.y,
+                        x:v.x,
+                        z:v.z,
+                        // a random angle
+                        ang:Math.random()*Math.PI*2,
+                        // a random distance
+                        amp:5 + Math.random()*15,
+                        // a random speed between 0.016 and 0.048 radians / frame
+                        speed:0.016 + Math.random()*0.032
+                    });
+                };
+                var mat = new THREE.MeshPhongMaterial({
+                    transparent:true,
+                    opacity:.8,
+                    map: texture4,
+                    shading:THREE.FlatShading,
+                });
+
+                this.mesh = new THREE.Mesh(geom, mat);
+                this.mesh.receiveShadow = true;
+
+            };
+
+            var hemisphereLight, shadowLight;
+
+
+
+            function createLights() {
+                // A hemisphere light is a gradient colored light;
+                // the first parameter is the sky color, the second parameter is the ground color,
+                // the third parameter is the intensity of the light
+                hemisphereLight = new THREE.HemisphereLight(0xaaaaaa,0x000000, .3);
+
+                // A directional light shines from a specific direction.
+                // It acts like the sun, that means that all the rays produced are parallel.
+                shadowLight = new THREE.DirectionalLight(0xffffff, .9);
+
+                // Set the direction of the light
+                shadowLight.position.set(150, 350, 350);
+
+                // Allow shadow casting
+                shadowLight.castShadow = true;
+
+                // define the visible area of the projected shadow
+                shadowLight.shadow.camera.left = -400;
+                shadowLight.shadow.camera.right = 400;
+                shadowLight.shadow.camera.top = 400;
+                shadowLight.shadow.camera.bottom = -400;
+                shadowLight.shadow.camera.near = 1;
+                shadowLight.shadow.camera.far = 1000;
+
+                // define the resolution of the shadow; the higher the better,
+                // but also the more expensive and less performant
+                shadowLight.shadow.mapSize.width = 2048;
+                shadowLight.shadow.mapSize.height = 2048;
+
+                // to activate the lights, just add them to the scene
+                scene.add(hemisphereLight);
+                scene.add(shadowLight);
+            }
+
+            // now we create the function that will be called in each frame
+            // to update the position of the vertices to simulate the waves
+
+            Sea.prototype.moveWaves = function (){
+
+                // get the vertices
+                var verts = this.mesh.geometry.vertices;
+                var l = verts.length;
+
+                for (var i=0; i<l; i++){
+                    var v = verts[i];
+
+                    // get the data associated to it
+                    var vprops = this.waves[i];
+
+                    // update the position of the vertex
+                    v.x = vprops.x + Math.cos(vprops.ang)*vprops.amp;
+                    v.y = vprops.y + Math.sin(vprops.ang)*vprops.amp;
+
+                    // increment the angle for the next frame
+                    vprops.ang += vprops.speed;
+
+                }
+
+                // Tell the renderer that the geometry of the sea has changed.
+                // In fact, in order to maintain the best level of performance,
+                // three.js caches the geometries and ignores any changes
+                // unless we add this line
+                this.mesh.geometry.verticesNeedUpdate=true;
+
+                sea.mesh.rotation.z += .0009;
+            };
+
+
+
+
+
+            var sea;
+
+            function createSea(){
+                sea = new Sea();
+
+                var zoom = -5000;
+                // push it a little bit at the bottom of the scene
+
+
+                // add the mesh of the sea to the scene
+                scene.add(sea.mesh);
+            }
+
+            var scaling = 0;
+
+
+            createSea();
+            createLights();
+
+
+            var zoom = -1700;
+            var x =0;
+            var y = 0;
+            var z = 30;
+            var startSpinning = false;
+
+             function loop () {
+
+                hemisphereLight.light
+                var rotate = 0;
+
+                renderer.render(scene, camera);
+
+
+
+                 sea.mesh.position.set(10,0,zoom);
+
+                $(".bars").click(function(){
+                   startSpinning = true;
+                });
+
+                $(".ex").click(function(){
+                   z = -1700;
+
+                });
+
+                if(startSpinning){
+                    z -= 5;
+
+                    $(".text-overlay h1 span").fadeOut(300);
+                    $(".read-more").fadeOut(300);
+                    $(".bars").fadeOut("slow");
+                    $(".menu").show();
+                    $(".menu").addClass("menu-animation");
+                    $(".three-column").addClass("three-column-animation");
+
+                    setTimeout(function(){
+                        $(".menu-items img").css({opacity: 1});
+
+                    },1000)
+
+                    if(z <=10 ){
+                        z = 10;
+                    }
+
+                }
+
+                 camera.position.set(x,y,z);
+
+                 z += 0.1;
+
+
+
+
+                 cube.rotation.y += 0.005;
+
+                sea.moveWaves();
+
+                requestAnimationFrame(loop);
+
+
+            };
+
+             loop();
+
+
+
+
+        </script>
+    </body>
+</html>
